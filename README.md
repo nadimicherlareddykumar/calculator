@@ -1,38 +1,33 @@
 # Calculator
 
-A simple, lightweight Python calculator project. This repository contains a straightforward calculator implementation (calculator.py) that can be used as a command-line script or imported into other Python projects for evaluating arithmetic expressions and performing basic math operations.
-
-This README gives a quick overview, installation instructions, usage examples, and guidance for contributing.
-
----
+Calculator Pro — a modern, featureful desktop calculator built with Python and Tkinter. It provides a polished GUI, basic and some scientific operations, memory and history, keyboard support, and a compact, well-documented single-file implementation (calculator.py).
 
 ## Features
 
-- Evaluate arithmetic expressions (addition, subtraction, multiplication, division, parentheses)
-- Simple command-line usage
-- Meant to be minimal and easy to read — a good starting point for learners
-- Single-file implementation for easy reuse and import
-
-> Note: If you want additional features (scientific functions, GUI, expression history, unit tests, packaging), I can help add them.
-
----
+- Graphical desktop application (Tkinter) with a modern dark theme
+- Basic arithmetic: +, -, ×, ÷, %
+- Scientific helpers: square root (√), square (x²)
+- Memory operations: MC, MR, M+, M-
+- Calculation history (last 50 entries)
+- Keyboard support (numbers, operators, Enter for =, Backspace, Escape/"c" for AC)
+- Clipboard copy of result and a small animated startup
 
 ## Requirements
 
 - Python 3.8 or newer
-- No external dependencies (standard library only) — if your implementation uses third-party packages, add them here.
-
----
+- Tkinter (usually included with standard Python distributions)
 
 ## Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/nadimicherlareddykumar/calculator.git
 cd calculator
 ```
 
 2. (Optional) Create and activate a virtual environment:
+
 ```bash
 python -m venv .venv
 # macOS / Linux
@@ -41,92 +36,69 @@ source .venv/bin/activate
 .venv\Scripts\Activate.ps1
 ```
 
----
+## Running the app
 
-## Usage
-
-Run the calculator script from the repository root:
+Start the GUI by running:
 
 ```bash
 python calculator.py
 ```
 
-Typical behaviour:
-- The script may provide a small REPL (interactive prompt) where you can type arithmetic expressions and receive results.
-- Enter expressions like `2 + 2`, `3 * (4 - 1)`, or `10/3`.
-- Use `exit`, `quit`, or press CTRL+C to leave the interactive session (if provided).
+This opens the Calculator Pro window. Enter expressions using the on-screen buttons or your keyboard. Press Enter to evaluate, Backspace to delete, and Escape or the "c" key to clear.
 
-Example (expected):
-```
-> 2 + 3 * (4 - 1)
-11
-> 10 / 4
-2.5
-> exit
-```
+## Programmatic usage
 
-If you prefer to import functionality into your own code, you can import the module:
+The project is primarily a GUI app, but the Calculator class can be instantiated from Python if you need to integrate or automate it. Example:
 
 ```python
-import calculator
+import tkinter as tk
+from calculator import Calculator
 
-# If the module exposes a function to evaluate strings, use it:
-# result = calculator.evaluate("2+3*4")
-# print(result)
+root = tk.Tk()
+calc = Calculator(root)
+
+# Set an expression programmatically
+calc.expression = "2+3*4"
+# Trigger evaluation (uses the same logic as the = button)
+calc.on_button_click('=')
+
+# Result is available in calc.expression
+print(calc.expression)  # -> "14"
+
+# Run the GUI loop if you want to show the window
+# root.mainloop()
 ```
 
-Note: The exact importable functions/classes depend on the implementation in `calculator.py`. If you'd like, I can update the README with concrete import examples after inspecting the code (or add a small API wrapper).
+Note: The class exposes internal methods (e.g., on_button_click) rather than a dedicated evaluate() API. If you want a clean programmatic API, I can add a safe evaluate(expression:str) function that returns results without needing a Tk root.
 
----
+## Safety note
+
+calculator.py uses Python's eval() internally after replacing display symbols (× → *, ÷ → /). While input is constrained via the GUI buttons, if you import and use eval on untrusted input there is risk. I can replace eval with a safe expression parser (for example, using the ast module or a small shunting-yard parser) if you want the project hardened for untrusted inputs.
+
+## Keyboard shortcuts
+
+- Enter: evaluate (=)
+- Backspace: delete (⌫)
+- Escape or 'c': clear (AC)
+- Ctrl+C: from the Edit menu copy result to clipboard
 
 ## Project structure
 
-- calculator.py — main implementation (script + possible importable functions)
-- README.md — project documentation (this file)
-
----
+- calculator.py — main GUI implementation
+- README.md — this file
+- LICENSE — project license (MIT)
 
 ## Contributing
 
-Contributions are welcome! A suggested workflow:
+Contributions are welcome. Suggested next steps I can do and commit to a branch or main (your choice):
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Make changes and commit with clear messages
-4. Push the branch and open a pull request
+- Add a dedicated, safe evaluate() API for programmatic use
+- Replace eval with a safe parser
+- Add unit tests (pytest)
+- Add GitHub Actions for CI
 
-If you'd like tests, CI, or additional features added (like expression history, error handling improvements, or a GUI), open an issue or submit a pull request describing the change.
-
----
-
-## Tests
-
-There are no automated tests included yet. If you'd like, I can add unit tests (pytest), example test cases, and a simple CI workflow.
-
----
+If you prefer, I can create a branch and open a PR with these changes instead of pushing straight to main.
 
 ## License
 
-No license is included in the repository. If you want this project to be open source, consider adding an explicit license (for example, MIT). Let me know which license you prefer and I can add a LICENSE file.
-
----
-
-## Roadmap / Ideas
-
-- Add robust parsing to avoid unsafe use of `eval` (if applicable)
-- Add unit tests and CI (GitHub Actions)
-- Add optional scientific functions (sin, cos, log)
-- Provide both CLI and a minimal GUI (Tkinter) or a web UI
-- Package the project for pip install
-
----
-
-## Need help?
-
-If you want, I can:
-- Update this README with concrete usage examples based on the current `calculator.py`
-- Create a LICENSE file (MIT, Apache-2.0, etc.)
-- Commit this README to the repository and open a PR
-- Add unit tests and a GitHub Actions workflow
-
-Tell me which of the above you'd like me to do next.
+This repository is licensed under the MIT License. See LICENSE for details.
